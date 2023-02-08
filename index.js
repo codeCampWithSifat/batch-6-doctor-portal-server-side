@@ -129,12 +129,12 @@ async function run() {
       res.send(cursor);
     });
 
-    app.get('/users/admin/:email', async(req,res) => {
-      const email = req.params.email ;
-      const query = {email : email};
+    app.get("/users/admin/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
       const user = await userCollection.findOne(query);
-      res.send({isAdmin: user?.role === "admin"});
-    })
+      res.send({ isAdmin: user?.role === "admin" });
+    });
 
     // generate a token
     app.get("/jwt", async (req, res) => {
@@ -150,12 +150,12 @@ async function run() {
       res.status(403).send({ accessToken: "Forbidden" });
     });
 
-    app.put("/users/admin/:id", verifyJWT , async (req, res) => {
+    app.put("/users/admin/:id", verifyJWT, async (req, res) => {
       const decodedEmial = req.decoded.email;
-      const query = {email: decodedEmial};
+      const query = { email: decodedEmial };
       const user = await userCollection.findOne(query);
-      if(user?.role !== "admin") {
-        return res.status(401).send({message : "forbidden access"});
+      if (user?.role !== "admin") {
+        return res.status(401).send({ message: "forbidden access" });
       }
       const id = req.params.id;
       const filter = { _id: ObjectId(id) };
